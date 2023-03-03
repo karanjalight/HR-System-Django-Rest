@@ -30,7 +30,6 @@ class EmployerModelSerializer(serializers.ModelSerializer):
 # -----------------   Employee --------------------
 class EmployeeModelSerializer(serializers.ModelSerializer):
     # PrimaryKeyRelatedField
-    #employer = serializers.PrimaryKeyRelatedField(queryset=Employer.objects.first(),  many=False)
     user = serializers.PrimaryKeyRelatedField(queryset=Employer.objects.all(),  many=False)
     employer_name = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(),  many=False)
       
