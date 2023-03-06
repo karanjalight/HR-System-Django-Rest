@@ -1,6 +1,8 @@
 <h2> HR MANAGEMENT SYSTEM DJANGO REST APP  </h2>
 This system is meant to help employers and HR departments in Managing employee data and leave days
 It is a great software and I hope to see much more features on the app. Enjoy 😃😀
+
+<br>
 To Install this app
     clone the repo into your directory
     Create and run virtual environment
