@@ -6,11 +6,11 @@ urlpatterns = [
     path('', views.index, name='index' ),
     path('register/', views.register, name='register'), #<--to register new users
     
+    #=====================   LIST AND DETAIL VIEW OF THE APIS  =====================
     # -------  Employer  ----------
     path('employer/', views.employer_list, name='employer'),
     path('employer/<int:pk>/',views.employer_detail, name='employee-detail'),
 
-    #path('employer-detail/<str:slug>', views.Employer_detail),
 
     # ---------    Employee ----------------
     path('employee/', views.employee_view , name='EmployeeView'),

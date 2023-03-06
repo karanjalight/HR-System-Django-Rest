@@ -1,6 +1,7 @@
 from rest_framework import routers,serializers,viewsets
 from .models import *
-
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 # --------- user ----------
 class userSerializer(serializers.ModelSerializer):
@@ -9,12 +10,12 @@ class userSerializer(serializers.ModelSerializer):
   
     class Meta:
         model = User
-        fields = (
-            'pk',
-            'user_name'
-            )
+        fields = ( 'id', 'username','password')
+        extra_kwargs = {'password': {'required':True, 'write_only': True}}
 
-
+        def create(self, validated_data):
+            user = User.objects.create_user(**validated_data)
+            Token.User.objects.create(user=user)
 
 # --------------------  Employer ----------------------------
 

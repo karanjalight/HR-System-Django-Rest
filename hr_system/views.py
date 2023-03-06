@@ -36,10 +36,10 @@ def register(request):
 def index(request):    
     return render(request, 'index.html')
 
-
 #################################  REST API VIEWS #########################
 
 # ---------------------   Employer
+# =============  Create and Read ============== 
 @csrf_exempt
 def employer_list(request):
     if request.method == 'GET':
@@ -55,7 +55,8 @@ def employer_list(request):
             emp_serializer.save()
             return JsonResponse(emp_serializer.data,  status=201)
         return JsonResponse(emp_serializer.errors, status=400)  
-    
+
+# =============  Update and Delete ==============  
 @csrf_exempt
 def employer_detail(request, pk):
     try:
@@ -64,13 +65,14 @@ def employer_detail(request, pk):
         return HttpResponse(status=404)
   
     if request.method == 'GET':
-        emp_serializer = EmployerSerializer(emp)
+        emp_serializer = EmployerModelSerializer(emp)
         return JsonResponse(emp_serializer.data)
     elif request.method == 'DELETE':
         emp.delete()
         return HttpResponse(status=204)
   
 # ---------------------   Employee
+# =============  Create and Read ============== 
 @csrf_exempt
 def employee_view(request):
     if request.method == 'GET':
@@ -86,7 +88,8 @@ def employee_view(request):
             emp_serializer.save()
             return JsonResponse(emp_serializer.data,  status=201)
         return JsonResponse(emp_serializer.errors, status=400)  
-    
+
+# =============  Update and Delete ==============  
 @csrf_exempt
 def employee_detail(request, pk):
     try:
@@ -102,6 +105,7 @@ def employee_detail(request, pk):
         return HttpResponse(status=204)
 
 # ---------------------   Company Assets
+# =============  Create and Read ============== 
 @csrf_exempt
 def CompanyAssets_list(request):
    
@@ -128,6 +132,7 @@ def CompanyAssets_list(request):
             # provide a Json Response with the necessary error information
         return JsonResponse(serializer.errors, status=400)
 
+# =============  Update and Delete ============== 
 @csrf_exempt
 def companyasset_detail(request, pk):
     try:
@@ -144,6 +149,7 @@ def companyasset_detail(request, pk):
       
 
 # ---------------------   Company Inventory
+# =============  Create and Read ============== 
 @csrf_exempt
 def CompanyInventoy_list(request):
    
@@ -169,7 +175,7 @@ def CompanyInventoy_list(request):
             return JsonResponse(serializer.data, status=201)
             # provide a Json Response with the necessary error information
         return JsonResponse(serializer.errors, status=400)
-
+# =============  Update and Delete ============== 
 @csrf_exempt
 def CompanyInventory_detail(request, pk):
     try:
@@ -185,6 +191,7 @@ def CompanyInventory_detail(request, pk):
         return HttpResponse(status=204)
       
 # ---------------------   Time Off
+# =============  Create and Read ============== 
 @csrf_exempt
 def TimeOff_list(request):
    
@@ -210,7 +217,7 @@ def TimeOff_list(request):
             return JsonResponse(serializer.data, status=201)
             # provide a Json Response with the necessary error information
         return JsonResponse(serializer.errors, status=400)
-
+# =============  Update and Delete ============== 
 @csrf_exempt
 def TimeOff_detail(request, pk):
     try:
