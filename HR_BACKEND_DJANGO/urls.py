@@ -15,7 +15,7 @@ urlpatterns = [
 
 
     #Django auth
-    path('login/', auth_views.LoginView.as_view(), name='login'),  #<--to login
+    path('', auth_views.LoginView.as_view(), name='login'),  #<--to login
     path('logout/', auth_views.LogoutView.as_view(), name='logout'), #<--to logout
     
 

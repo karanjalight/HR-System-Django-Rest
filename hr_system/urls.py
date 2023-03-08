@@ -1,10 +1,24 @@
 from django.urls import path
 from . import views
+from knox import views as knox_views
+
+from .views import RegisterAPI, LoginAPI
 
 urlpatterns = [
+    #user urlls
+    path('api/register/', RegisterAPI.as_view(), name='register'),
+    path('api/login/', LoginAPI.as_view(), name='login'),
+    path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
+    path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     
-    path('', views.index, name='index' ),
+
+    ##################    THis are Page navigators ######################
+    path('home/', views.index, name='index' ),
     path('register/', views.register, name='register'), #<--to register new users
+    path('employee/', views.employee, name='employee'),
+    path('inventory/', views.inventory, name='inventory'),
+    path('leave/', views.leave, name='leave'),
+    path('asset/', views.asset, name='asset'),
     
     #=====================   LIST AND DETAIL VIEW OF THE APIS  =====================
     # -------  Employer  ----------

@@ -3,22 +3,27 @@ from .models import *
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
-# --------- user ----------
-class userSerializer(serializers.ModelSerializer):
-    # PrimaryKeyRelatedField
-    tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-  
+
+# User Serializer
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ( 'id', 'username','password')
-        extra_kwargs = {'password': {'required':True, 'write_only': True}}
+        fields = ('id', 'username', 'email')
 
-        def create(self, validated_data):
-            user = User.objects.create_user(**validated_data)
-            Token.User.objects.create(user=user)
+# Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
+
+        return user
+    
 
 # --------------------  Employer ----------------------------
-
 class EmployerModelSerializer(serializers.ModelSerializer):
     # PrimaryKeyRelatedField    
     tasks = serializers.PrimaryKeyRelatedField(many=True, read_only=True)

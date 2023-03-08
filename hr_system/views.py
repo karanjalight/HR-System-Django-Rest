@@ -10,10 +10,50 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 # for sending response to the client
 from django.http import HttpResponse, JsonResponse
-# API definition for task
+
+# Serialization
 from .serializers import *
 # Compant asset model
 from .models import *
+from django.contrib.auth.decorators import login_required
+
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from knox.models import AuthToken
+from .serializers import UserSerializer, RegisterSerializer
+
+from rest_framework import permissions
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from knox.views import LoginView as KnoxLoginView
+
+
+
+# Register API
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": AuthToken.objects.create(user)[1]
+        })
+    
+#login Api
+class LoginAPI(KnoxLoginView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return super(LoginAPI, self).post(request, format=None)
+
+
+
 
 
 #============    Register New User  ================#
@@ -32,9 +72,32 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
+
 # ---------- Company Dashboards ----------------
-def index(request):    
-    return render(request, 'index.html')
+@login_required(login_url='register')
+def index(request): 
+    user = User.objects.all()
+    print(user)
+
+    return render(request, 'index.html',{'user':user})
+
+
+def employee(request): 
+       
+    return render(request, 'employee.html')
+
+def asset(request): 
+       
+    return render(request, 'asset.html')
+
+def inventory(request): 
+       
+    return render(request, 'inventory.html')
+
+def leave(request): 
+       
+    return render(request, 'leave.html')
+
 
 #################################  REST API VIEWS #########################
 

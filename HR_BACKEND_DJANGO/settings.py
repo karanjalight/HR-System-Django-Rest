@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import pusher
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 
     #importing the django rest framework
     'rest_framework',
+    'knox',  # this is for the token based authentication
 
     #importing the CORS app
     'corsheaders',
@@ -76,7 +78,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templatess')
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -160,3 +162,23 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
+
+
+pusher_client = pusher.Pusher(
+  app_id='1563853',
+  key='decff73715143f58a567',
+  secret='0abd96c859dfedfb5f68',
+  cluster='ap2',
+  ssl=True
+)
+
+pusher_client.trigger('my-channel', 'my-event', {'message': 'hello world'})
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'knox.auth.TokenAuthentication',
+    ]
+}
