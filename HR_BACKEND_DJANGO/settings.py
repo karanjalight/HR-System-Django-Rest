@@ -172,7 +172,7 @@ pusher_client = pusher.Pusher(
   ssl=True
 )
 
-pusher_client.trigger('my-channel', 'my-event', {'message': 'hello world'})
+#pusher_client.trigger('my-channel', 'my-event', {'message': 'hello world'})
 
 
 REST_FRAMEWORK = {
